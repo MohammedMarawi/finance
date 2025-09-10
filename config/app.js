@@ -8,17 +8,18 @@ const routes = require('../routes');
 const configureApp = (app) => {
   app.use(express.json());
 
+  app.use(
+    cors({
+      origin: '*',
+    })
+  );
+  
   app.use('/api', routes);
    
   if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
   }
 
-app.use(
-  cors({
-    origin: '*',
-  })
-);
 
   app.all('/{*any}', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
